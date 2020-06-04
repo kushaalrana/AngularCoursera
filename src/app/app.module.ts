@@ -12,10 +12,14 @@ import{MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FlexLayoutModule } from '@angular/flex-layout';
 import {FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { DishdetailComponent } from './dishdetail/dishdetail.component';
+
 
 import 'hammerjs';
 import {DishService} from './services/dish.service';
@@ -57,7 +61,10 @@ import { LoginComponent } from './login/login.component';
     MatButtonModule,
     AppRoutingModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+   ReactiveFormsModule,
+   MatSelectModule,
+   MatSlideToggleModule
   ],
   providers: [DishService,PromotionService,LeaderService],
   entryComponents: [LoginComponent],
