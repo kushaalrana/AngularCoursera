@@ -10,7 +10,7 @@ export class LoginComponent implements OnInit {
 
   user = {username: '',password: '', remember: false};
 
-  constructor(public dialogRef: MatDialogRef<LoginComponent>) { }
+  constructor(public dialogRef: MatDialogRef<LoginComponent>) { } //becase we can close the dialogue box again sp we are injecting dialogueref that is reference of dialogue so that you can class once its filled
 
   ngOnInit() {
   }

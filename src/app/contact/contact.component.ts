@@ -21,13 +21,13 @@ export class ContactComponent implements OnInit {
    
   }
   createForm()
-  {
+  {//this is the structure of the form whenever this method is called  this form will be reactive form 
 this.feedbackForm=this.fb.group({
   firstname: '',
   lastname: '',
   telnum: 0,
   email: '',
-  agree: 'false',
+  agree: false,
   contacttype: 'None',
   message: ''
 });
