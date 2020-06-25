@@ -1,12 +1,13 @@
-import { Component, OnInit, createPlatformFactory } from '@angular/core';
+import { Component, OnInit,Inject ,ViewChild } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { Params,ActivatedRoute } from '@angular/router';
 import{ Location } from '@angular/common';
 import {DishService } from '../services/dish.service';
 import {switchMap} from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
+// import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import {Comment} from '../shared/comment';
+// import {baseURL} from '../shared/baseurl';
 
 
 
@@ -23,11 +24,16 @@ export class DishdetailComponent implements OnInit {
   dishIds: string[];
   prev: string;
   next: string;
+  errMess:string;
   
 
-  constructor(private dishService: DishService,private location: Location,private route: ActivatedRoute,private cb:FormBuilder)
+  constructor(private dishService: DishService,
+              private location: Location,
+              private route: ActivatedRoute,
+              private cb:FormBuilder, 
+               @Inject('BaseURL') private BaseURL)
    {
-     this.createForm();
+    this.createForm();
    }
 
      formErrors={
@@ -46,12 +52,12 @@ export class DishdetailComponent implements OnInit {
      };
   
   ngOnInit() {
-
+   
     this.dishService.getDishIds()
     .subscribe((dishIds) =>this.dishIds = dishIds);
 
     this.route.params.pipe(switchMap((params:Params)=>this.dishService.getDish(params['id'])))
-       .subscribe((dish)=>{this.dish=dish; this.setPrevNext(dish.id);}); 
+       .subscribe((dish)=>{this.dish=dish; this.setPrevNext(dish.id);} , errMess=>this.errMess= <any> errMess); 
   }
 
   createForm()
