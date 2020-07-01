@@ -20,8 +20,12 @@ import {flyInOut,expand} from '../animations/app.animation';
       animations: [flyInOut(),expand()]
     })
 export class HomeComponent implements OnInit {
-  dish: Dish;
+
   dishErrMess: string;
+  leaderErrMess: string;
+  promotionErrMess: string;
+
+  dish: Dish;
   promotion: Promotion;
   leader: Leader;
   
@@ -34,10 +38,10 @@ export class HomeComponent implements OnInit {
         .subscribe((dish)=>this.dish=dish, errMess => this.dishErrMess = <any>errMess); 
 
     this.promotionService.getFeaturedPromotion()
-     .subscribe(promotion=>this.promotion= promotion);
+     .subscribe(promotion=>this.promotion= promotion, errMess => this.promotionErrMess = <any> errMess);
 
     this.leaderService.getFeatured()
-       .subscribe(leader=>this.leader=leader);
+       .subscribe(leader=>this.leader=leader, errMess => this.leaderErrMess = <any> errMess);
   }
 
 }

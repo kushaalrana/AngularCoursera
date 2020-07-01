@@ -26,6 +26,9 @@
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
+    "ngx": "^2.4.0",
+    "ngx-bootstrap": "^5.6.1",
+    "rx": "^4.1.0",
     "rxjs": "~6.2.0",
     "zone.js": "~0.8.26"
   },

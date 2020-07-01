@@ -36,10 +36,15 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { MatSliderModule } from '@angular/material';
 
+
+
 import { ProcessHTTPMsgService} from './services/process-httpmsg.service';
 
-import {baseURL} from './shared/baseurl';
 import { HighlightDirective } from './directives/highlight.directive';
+// import { FeedbackService } from './services/feedback.service';
+
+import {baseURL} from './shared/baseurl';
+
 
 @NgModule({
   declarations: [
@@ -76,7 +81,8 @@ import { HighlightDirective } from './directives/highlight.directive';
    MatProgressSpinnerModule,
    MatSliderModule,
    HttpClientModule,
-   HttpModule
+   HttpModule,
+   ReactiveFormsModule
   ],
   providers: [DishService,PromotionService,LeaderService, ProcessHTTPMsgService,
     {provide: 'BaseURL', useValue:baseURL}],
