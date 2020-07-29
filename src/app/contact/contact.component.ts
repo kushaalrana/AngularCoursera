@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
-import {flyInOut} from '../animations/app.animation';
+import {flyInOut,expand} from '../animations/app.animation';
+import {FeedbackService} from '../services/feedback.service';
+
 
 
 @Component({
@@ -14,13 +16,16 @@ import {flyInOut} from '../animations/app.animation';
     'style': 'display:block;'
     
       },
-      animations: [flyInOut()]
+      animations: [flyInOut(),expand()]
     })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
   contactType = ContactType;
+  feedbackcopy: Feedback;
+  errMess: string;
+
   @ViewChild('fform') feedbackFormDirective;
 
   formErrors = {
@@ -49,10 +54,14 @@ export class ContactComponent implements OnInit {
       'email': 'Email not in valid format.'
     }
   };
-  constructor(private fb: FormBuilder) {
+  isLoading: boolean;
+  isShowingResponse: boolean;
+  
+  constructor(private feedbackService: FeedbackService , private fb: FormBuilder) {
     this.createForm();
+    this.isLoading = false;
+    this.isShowingResponse = false;
   }
-
   ngOnInit(): void {
 
   }
@@ -60,7 +69,7 @@ export class ContactComponent implements OnInit {
     this.feedbackForm = this.fb.group({
       firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
       lastname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
-      telnum: [0, [Validators.required, Validators.pattern]],
+      telnum: ['', [Validators.required, Validators.pattern]],
       email: ['', [Validators.required, Validators.email]],
       agree: false,
       contacttype: 'None',
@@ -94,20 +103,37 @@ export class ContactComponent implements OnInit {
     }
   }
 }
-
-  onSubmit() {
-    this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
-    this.feedbackForm.reset({
-      firstname: '',
-      lastname: '',
-      telnum: 0,
-      email: '',
-      agree: false,
-      contacttype: 'None',
-      message: ''
-    });
-    this.feedbackFormDirective.resetForm();
-  }
-
+onSubmit() {
+  this.isLoading = true;
+  this.feedback = this.feedbackForm.value;
+  this.feedbackService.submitFeedback(this.feedback)
+    .subscribe(feedback => {
+        this.feedback = feedback;
+        console.log(this.feedback);
+      } ,
+      errmess => {
+        this.feedback = null;
+        this.feedbackcopy = null;
+        this.errMess = <any>errmess;
+      } ,
+      () => {
+        this.isShowingResponse = true;
+        setTimeout(() => {
+          this.feedbackForm.reset();
+            this.isShowingResponse = false;
+            this.isLoading = false;
+          } , 5000
+        );
+      })
+  ;
+  this.feedbackForm.reset({
+    firstname: '' ,
+    lastname: '' ,
+    telnum: '' ,
+    email: '' ,
+    agree: false ,
+    contacttype: 'None' ,
+    message: ''
+  });
+}
 }
